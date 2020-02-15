@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,6 +20,7 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return view('dashboard');
 });
+
 
 
 
