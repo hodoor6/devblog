@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class User extends Authenticatable
 {
@@ -21,16 +22,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email',
     ];
 
+//'password'
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 
     public function posts()
@@ -43,30 +45,56 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'user_id');
     }
 
-//длбавление пользователя
+
+//добавление пользователя
     public static function add($fields)
     {
+//
+
         $user = new static;
         $user->fill($fields);
-        $user->password = bcrypt($fields['password']);
-//        $user->rememberToken = $token;
         $user->save();
 
         return $user;
     }
 
+    //изменение пароля пользователя
+    public function generatePassword($password)
+    {
+
+
+        if ($password != null) {
+            $this->password = bcrypt($password);
+            $this->save();
+        }
+    }
+
+
 // редактирование пользователя
     public function edit($fields)
     {
+
+//        dd($fields);
         $this->fill($fields);
-        $this->password = bcrypt($fields['password']);
         $this->save();
     }
+
+    public function removeAvatar()
+    {
+        if ($this->avatar != null) {
+            Storage::delete('uploads/' . $this->avatar);
+//            $directory = 'uploads/' . $this->avatar;
+//            File::delete($directory);
+//    		unlink($directory);
+
+        }
+    }
+
 
 //удаление пользователя
     public function remove()
     {
-        Storage::delete('uploads/' . $this->image);
+        $this->removeAvatar();
         $this->delete();
     }
 
@@ -74,13 +102,19 @@ class User extends Authenticatable
 //обновление Аватара
     public function uploadAvatar($image)
     {
+
+
         if ($image == null) {
             return;
         }
-        Storage::delete('uploads/' . $this->image);
+        $this->removeAvatar();
+
+
+//        dd(get_class_methods($image));
+//
         $filename = str_random(10) . '.' . $image->extension();
-        $image->saveAs('uploads', $filename);
-        $this->image = $filename;
+        $image->storeAs('uploads', $filename);
+        $this->avatar = $filename;
         $this->save();
 
     }
@@ -88,10 +122,11 @@ class User extends Authenticatable
     //вывод избражения для пользователя
     public function getImage()
     {
-        if ($this->image == null) {
-            return '/img/no-user-image.png';
+
+        if ($this->avatar == null) {
+            return '/img/no-image.png';
         }
-        return '/uploads/' . $this->image;
+        return '/uploads/' . $this->avatar;
     }
 
 
@@ -148,6 +183,4 @@ class User extends Authenticatable
         }
 
     }
-
-
 }

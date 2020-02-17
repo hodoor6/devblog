@@ -20,7 +20,7 @@
       </div>
 
 
-@include ('admin.error');
+@include ('admin.error')
 
 
       <div class="box-body">

@@ -20,9 +20,9 @@
           <h3 class="box-title">Меняем категорию</h3>
         </div>
 
+        <div class="box-body">
           {{  Form::open(['route' => ['categories.update', $category->id], 'method' => 'put'])}}
-          <div class="box-body">
-            @include ('admin.error');
+            @include ('admin.error')
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Название</label>
@@ -32,7 +32,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          <a href="{{route('categories.index')}}" class="btn btn-default">Назад</a>
+          <button class="btn btn-default">Назад</button>
 
           <button class="btn btn-warning pull-right">Изменить</button>
 
