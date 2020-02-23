@@ -10,11 +10,13 @@ use Carbon\Carbon;
 
 class Post extends Model
 {
+
+    protected $dates = ['date'];
 //    protected $dateFormat = 'Y-m-d';
     use Sluggable;
 
     protected $fillable = [
-        'title', 'content', 'date'
+        'title', 'content', 'date','description',
     ];
 
 
@@ -240,6 +242,24 @@ class Post extends Model
         $this->tags()->detach();
         $this->tags()->attach($arrayTags);
     }
+
+    public function getCategoryID()
+
+    {
+     return ($this->category_id != null)
+         ? $this->category_id
+        : null;
+    }
+
+
+    public function getDate()
+    {
+         $date = Carbon::createFromFormat('d/m/y', $this->date)->format('F d,Y');
+
+        return $date;
+    }
+
+
 }
 
 
