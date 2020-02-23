@@ -86,7 +86,6 @@ class User extends Authenticatable
 //            $directory = 'uploads/' . $this->avatar;
 //            File::delete($directory);
 //    		unlink($directory);
-
         }
     }
 
@@ -108,7 +107,6 @@ class User extends Authenticatable
             return;
         }
         $this->removeAvatar();
-
 
 //        dd(get_class_methods($image));
 //

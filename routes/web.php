@@ -22,14 +22,12 @@ Route::get('/admin', function () {
 });
 
 
-
-
-Route::group(['prefix'=>'admin', 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/', 'DashboardController@index');
     Route::resource('/categories', 'CategoriesController');
     Route::resource('/tags', 'TagsController');
     Route::resource('/users', 'UsersController');
-//    Route::resource('/posts', 'PostsController');
+    Route::resource('/posts', 'PostsController');
 });
 
 
